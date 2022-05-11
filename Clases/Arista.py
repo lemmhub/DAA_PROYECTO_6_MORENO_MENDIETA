@@ -4,6 +4,17 @@ class Arista(object):
         self.u = u
         self.v = v
         self.id = (u.id, v.id)
-        self.attrs = attrs
+        self.attrs = dict()
+
+    def __eq__(self, other):
+        
+        return self.u == other.u and self.v == other.v
+
+    def __repr__(self):
+        
+        return repr(self.id)
+
+    def agregar_peso(self, peso):
+        self.attrs['peso'] = peso
 
    

@@ -6,9 +6,9 @@ from Clases.Modelos_grafos import grafoMalla, grafoErdosRenyi, grafoGilbert, gra
 
 
 def main():
-    path = ("C:\\Users\\Precision\\Desktop\\PROYECTO_1\\PROYECTO_2_MORENO_MENDIETA\\GV_FILES")
+    path = ("C:\\Users\\Precision\\Desktop\\PROYECTO_1\\PROYECTO_3_MORENO_MENDIETA\\GV_FILES")
 
-    Nodos_totales=[30,100,500]
+    Nodos_totales=[30,300]
     for nodos in Nodos_totales:
         m_erdos = random.randint(nodos+1,nodos*2)
         p_gilbert = random.uniform(0.1,1)
@@ -28,64 +28,58 @@ def main():
 
         grafito = grafoMalla(*(malla_a,malla_b))
         grafito.to_graphviz(path + grafito.id + ".gv")
-        bfs=grafito.BFS(Nodo(0))
-        bfs = grafito.BFS(Nodo(0))
-        bfs.to_graphviz(path + bfs.id + ".gv")
-        dfs = grafito.DFS_R(Nodo(0))
-        dfs.to_graphviz(path + dfs.id + ".gv")
-        dfs_i = grafito.DFS_I(Nodo(0))
-        dfs_i.to_graphviz(path + dfs_i.id + ".gv")
+        grafito.generar_pesos()
+        dijkstra = grafito.Dijkstra(0)
+        dijkstra.to_graphviz(path + dijkstra.id + ".gv")
+      
+       
+
 
 
         grafito = grafoErdosRenyi(nodos, m_erdos)
         grafito.to_graphviz(path + grafito.id + ".gv")
-        bfs=grafito.BFS(Nodo(0))
-        bfs = grafito.BFS(Nodo(0))
-        bfs.to_graphviz(path + bfs.id + ".gv")
-        dfs = grafito.DFS_R(Nodo(0))
-        dfs.to_graphviz(path + dfs.id + ".gv")
-        dfs_i = grafito.DFS_I(Nodo(0))
-        dfs_i.to_graphviz(path + dfs_i.id + ".gv")
+        grafito.generar_pesos()
+        dijkstra = grafito.Dijkstra(0)
+        dijkstra.to_graphviz(path + dijkstra.id + ".gv")
+        print(f"g_nodes: {len(grafito.V)}")
+        print(f"dijkstra_nodes: {len(dijkstra.V)}")
 
         grafito = grafoGilbert(nodos, p_gilbert, dirigido=False, auto=False)
         grafito.to_graphviz(path + grafito.id + ".gv")
-        bfs=grafito.BFS(Nodo(0))
-        bfs = grafito.BFS(Nodo(0))
-        bfs.to_graphviz(path + bfs.id + ".gv")
-        dfs = grafito.DFS_R(Nodo(0))
-        dfs.to_graphviz(path + dfs.id + ".gv")
-        dfs_i = grafito.DFS_I(Nodo(0))
-        dfs_i.to_graphviz(path + dfs_i.id + ".gv")
+        grafito.generar_pesos()
+        dijkstra = grafito.Dijkstra(0)
+        dijkstra.to_graphviz(path + dijkstra.id + ".gv")
+        
+
+
+
+
 
         grafito = grafoGeografico(nodos, r_geografico)
         grafito.to_graphviz(path + grafito.id + ".gv")
-        bfs=grafito.BFS(Nodo(0))
-        bfs = grafito.BFS(Nodo(0))
-        bfs.to_graphviz(path + bfs.id + ".gv")
-        dfs = grafito.DFS_R(Nodo(0))
-        dfs.to_graphviz(path + dfs.id + ".gv")
-        dfs_i = grafito.DFS_I(Nodo(0))
-        dfs_i.to_graphviz(path + dfs_i.id + ".gv")
+        grafito.generar_pesos()
+        dijkstra = grafito.Dijkstra(0)
+        dijkstra.to_graphviz(path + dijkstra.id + ".gv")
+        
+
+
+
 
         grafito = grafoBarabasiAlbert(nodos, d_barabasi, auto=False)
         grafito.to_graphviz(path + grafito.id + ".gv")
-        bfs=grafito.BFS(Nodo(0))
-        bfs = grafito.BFS(Nodo(0))
-        bfs.to_graphviz(path + bfs.id + ".gv")
-        dfs = grafito.DFS_R(Nodo(0))
-        dfs.to_graphviz(path + dfs.id + ".gv")
-        dfs_i = grafito.DFS_I(Nodo(0))
-        dfs_i.to_graphviz(path + dfs_i.id + ".gv")
+        grafito.generar_pesos()
+        dijkstra = grafito.Dijkstra(0)
+        dijkstra.to_graphviz(path + dijkstra.id + ".gv")
+       
+
+
 
         grafito = grafoDorogovtsevMendes(nodos, dirigido=False)
         grafito.to_graphviz(path + grafito.id + ".gv")
-        bfs=grafito.BFS(Nodo(0))
-        bfs = grafito.BFS(Nodo(0))
-        bfs.to_graphviz(path + bfs.id + ".gv")
-        dfs = grafito.DFS_R(Nodo(0))
-        dfs.to_graphviz(path + dfs.id + ".gv")
-        dfs_i = grafito.DFS_I(Nodo(0))
-        dfs_i.to_graphviz(path + dfs_i.id + ".gv")
+        grafito.generar_pesos()
+        dijkstra = grafito.Dijkstra(0)
+        dijkstra.to_graphviz(path + dijkstra.id + ".gv")
+       
 
 if __name__ == "__main__":
         main()

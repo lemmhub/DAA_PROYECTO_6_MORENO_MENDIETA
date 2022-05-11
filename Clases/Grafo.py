@@ -1,3 +1,6 @@
+import random
+import numpy as np
+import heapdict
 import sys
 from Clases.Arista import Arista
 
@@ -37,6 +40,13 @@ class Grafo(object):
             u, v = arista_id
             return (u, v) in self.E or (v, u) in self.E
 
+
+    #Proyecto 3 generar pesos  
+    def generar_pesos(self):
+        for arista in self.E.values():
+            arista.attrs['peso'] = random.randint(1, 50)
+
+
     def to_graphviz(self, filename):
        
         edge_connector = "--"
@@ -48,9 +58,20 @@ class Grafo(object):
         with open(filename, 'w') as f:
             f.write(f"{graph_directive} {self.id} " + " {\n")
             for nodo in self.V:
-                f.write(f"{nodo};\n")
+                if "Dijkstra" in self.id:
+                    f.write(f"\"{nodo} ({self.V[nodo].attrs['dist']})\";\n")
+                else:
+                    f.write(f"{nodo};\n")
             for arista in self.E.values():
-                f.write(f"{arista.u} {edge_connector} {arista.v};\n")
+                if "Dijkstra" in self.id:
+                    peso = np.abs(self.V[arista.u.id].attrs['dist']
+                                    - self.V[arista.v.id].attrs['dist'])
+                    f.write(f"\"{arista.u} ({self.V[arista.u.id].attrs['dist']})\""
+                            + f" {edge_connector} "
+                            + f"\"{arista.v} ({self.V[arista.v.id].attrs['dist']})\""
+                            + f";\n")
+                else:
+                    f.write(f"{arista.u} {edge_connector} {arista.v};\n")
             f.write("}")
 
 #PROYECTO 2
@@ -140,3 +161,49 @@ class Grafo(object):
             u = child
 
         return dfs
+
+#proyecto 3
+    def Dijkstra(self, s):
+        tree = Grafo(id=f"{self.id}_Dijkstra")
+        line = heapdict.heapdict()
+        parents = dict()
+        in_tree = set()
+
+
+     
+        line[s] = 0
+        parents[s] = None
+        for node in self.V:
+            if node == s:
+                continue
+            line[node] = np.inf
+            parents[node] = None
+
+        while line:
+            u, u_dist = line.popitem()
+            if u_dist == np.inf:
+                continue
+
+            self.V[u].attrs['dist'] = u_dist
+            tree.add_nodo(self.V[u])
+            if parents[u] is not None:
+                arista = Arista(self.V[parents[u]], self.V[u])
+                tree.add_arista(arista)
+            in_tree.add(u)
+
+            # get neighbor nodes
+            neigh = []
+            for arista in self.E:
+                if self.V[u].id in arista:
+                    v = arista[0] if self.V[u].id == arista[1] else arista[1]
+                    if v not in in_tree:
+                        neigh.append(v)
+
+            # actualizar distancias de ser necesario
+            for v in neigh:
+                arista = (u, v) if (u, v) in self.E else (v, u)
+                if line[v] > u_dist + self.E[arista].attrs['peso']:
+                    line[v] = u_dist + self.E[arista].attrs['peso']
+                    parents[v] = u
+
+        return tree
