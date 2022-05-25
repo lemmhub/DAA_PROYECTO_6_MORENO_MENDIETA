@@ -6,9 +6,9 @@ from Clases.Modelos_grafos import grafoMalla, grafoErdosRenyi, grafoGilbert, gra
 
 
 def main():
-    path = ("C:\\Users\\Precision\\Desktop\\PROYECTO_1\\PROYECTO_3_MORENO_MENDIETA\\GV_FILES")
+    path = ("C:\\Users\\Precision\\Desktop\\PROYECTO_1\\PROYECTO_4_MORENO_MENDIETA\\GV_FILES")
 
-    Nodos_totales=[30,300]
+    Nodos_totales=[30,100]
     for nodos in Nodos_totales:
         m_erdos = random.randint(nodos+1,nodos*2)
         p_gilbert = random.uniform(0.1,1)
@@ -29,9 +29,18 @@ def main():
         grafito = grafoMalla(*(malla_a,malla_b))
         grafito.to_graphviz(path + grafito.id + ".gv")
         grafito.generar_pesos()
-        dijkstra = grafito.Dijkstra(0)
-        dijkstra.to_graphviz(path + dijkstra.id + ".gv")
-      
+
+        kruskal = grafito.KruskalD()
+        kruskal.to_graphviz(path + kruskal.id + ".gv")
+        kruskalI = grafito.KruskalI()
+        kruskalI.to_graphviz(path + kruskalI.id + ".gv")
+        prim = grafito.Prim()
+        prim.to_graphviz(path + prim.id + ".gv")
+        print(f'\nMALLA')
+        print(f"MST kruskal: {kruskal.costo()}")
+        print(f"MST kruskalI: {kruskalI.costo()}")
+        print(f"MST Prim: {prim.costo()}")
+
        
 
 
@@ -39,16 +48,34 @@ def main():
         grafito = grafoErdosRenyi(nodos, m_erdos)
         grafito.to_graphviz(path + grafito.id + ".gv")
         grafito.generar_pesos()
-        dijkstra = grafito.Dijkstra(0)
-        dijkstra.to_graphviz(path + dijkstra.id + ".gv")
-        print(f"g_nodes: {len(grafito.V)}")
-        print(f"dijkstra_nodes: {len(dijkstra.V)}")
+        kruskal = grafito.KruskalD()
+        kruskal.to_graphviz(path + kruskal.id + ".gv")
+        kruskalI = grafito.KruskalI()
+        kruskalI.to_graphviz(path + kruskalI.id + ".gv")
+        prim = grafito.Prim()
+        prim.to_graphviz(path + prim.id + ".gv")
+        print(f'\nERDOS')
+        print(f"MST kruskal: {kruskal.costo()}")
+        print(f"MST kruskalI: {kruskalI.costo()}")
+        print(f"MST Prim: {prim.costo()}")
+
+
+
 
         grafito = grafoGilbert(nodos, p_gilbert, dirigido=False, auto=False)
         grafito.to_graphviz(path + grafito.id + ".gv")
         grafito.generar_pesos()
-        dijkstra = grafito.Dijkstra(0)
-        dijkstra.to_graphviz(path + dijkstra.id + ".gv")
+        kruskal = grafito.KruskalD()
+        kruskal.to_graphviz(path + kruskal.id + ".gv")
+        kruskalI = grafito.KruskalI()
+        kruskalI.to_graphviz(path + kruskalI.id + ".gv")
+        prim = grafito.Prim()
+        prim.to_graphviz(path + prim.id + ".gv")
+        print(f'\nGILBERT')
+        print(f"MST kruskal: {kruskal.costo()}")
+        print(f"MST kruskalI: {kruskalI.costo()}")
+        print(f"MST Prim: {prim.costo()}")
+
         
 
 
@@ -58,8 +85,17 @@ def main():
         grafito = grafoGeografico(nodos, r_geografico)
         grafito.to_graphviz(path + grafito.id + ".gv")
         grafito.generar_pesos()
-        dijkstra = grafito.Dijkstra(0)
-        dijkstra.to_graphviz(path + dijkstra.id + ".gv")
+        kruskal = grafito.KruskalD()
+        kruskal.to_graphviz(path + kruskal.id + ".gv")
+        kruskalI = grafito.KruskalI()
+        kruskalI.to_graphviz(path + kruskalI.id + ".gv")
+        prim = grafito.Prim()
+        prim.to_graphviz(path + prim.id + ".gv")
+        print(f'\nGEOGRÁFICO')
+        print(f"MST kruskal: {kruskal.costo()}")
+        print(f"MST kruskalI: {kruskalI.costo()}")
+        print(f"MST Prim: {prim.costo()}")
+
         
 
 
@@ -68,8 +104,17 @@ def main():
         grafito = grafoBarabasiAlbert(nodos, d_barabasi, auto=False)
         grafito.to_graphviz(path + grafito.id + ".gv")
         grafito.generar_pesos()
-        dijkstra = grafito.Dijkstra(0)
-        dijkstra.to_graphviz(path + dijkstra.id + ".gv")
+        kruskal = grafito.KruskalD()
+        kruskal.to_graphviz(path + kruskal.id + ".gv")
+        kruskalI = grafito.KruskalI()
+        kruskalI.to_graphviz(path + kruskalI.id + ".gv")
+        prim = grafito.Prim()
+        prim.to_graphviz(path + prim.id + ".gv")
+        print(f'\nBARABASI')
+        print(f"MST kruskal: {kruskal.costo()}")
+        print(f"MST kruskalI: {kruskalI.costo()}")
+        print(f"MST Prim: {prim.costo()}")
+
        
 
 
@@ -77,8 +122,17 @@ def main():
         grafito = grafoDorogovtsevMendes(nodos, dirigido=False)
         grafito.to_graphviz(path + grafito.id + ".gv")
         grafito.generar_pesos()
-        dijkstra = grafito.Dijkstra(0)
-        dijkstra.to_graphviz(path + dijkstra.id + ".gv")
+        kruskal = grafito.KruskalD()
+        kruskal.to_graphviz(path + kruskal.id + ".gv")
+        kruskalI = grafito.KruskalI()
+        kruskalI.to_graphviz(path + kruskalI.id + ".gv")
+        prim = grafito.Prim()
+        prim.to_graphviz(path + prim.id + ".gv")
+        print(f'\nDOROGOVSTEV')
+        print(f"MST kruskal: {kruskal.costo()}")
+        print(f"MST kruskalI: {kruskalI.costo()}")
+        print(f"MST Prim: {prim.costo()}")
+
        
 
 if __name__ == "__main__":

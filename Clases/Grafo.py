@@ -1,6 +1,7 @@
 import random
 import numpy as np
 import heapdict
+import copy
 import sys
 from Clases.Arista import Arista
 
@@ -13,6 +14,23 @@ class Grafo(object):
         self.V =        dict()
         self.E =        dict()
         self.attr =     dict()
+
+    def copiar_grafo(self, id=f"copy", dirigido=False):
+        
+        other = Grafo(id, dirigido)
+        other.V = copy.deepcopy(self.V)
+        other.E = copy.deepcopy(self.E)
+        other.attr = copy.deepcopy(self.attr)
+
+        return other
+
+    def costo(self):
+      
+        _costo = 0
+        for edge in self.E.values():
+            _costo += edge.attrs['peso']
+
+        return _costo
 
     def __repr__(self):
       
@@ -207,3 +225,108 @@ class Grafo(object):
                     parents[v] = u
 
         return tree
+
+#Proyecto 4
+    def KruskalD(self):
+        #Minimal spanding Tree
+        mst = Grafo(id=f"{self.id}_KruskalD_MST")
+
+        # SE ENLISTAN LAS ARISTAS POR PESO
+        edges_sorted = list(self.E.values())
+        edges_sorted.sort(key = lambda edge: edge.attrs['peso'])
+
+        # revisar los componentes conectados
+        connected_comp = dict()
+        for nodo in self.V:
+            connected_comp[nodo] = nodo
+
+       
+        for edge in edges_sorted:
+            u, v = edge.u, edge.v
+            if connected_comp[u.id] != connected_comp[v.id]:
+                # se agregan aristas al MST
+                mst.add_nodo(u)
+                mst.add_nodo(v)
+                mst.add_arista(edge)
+
+                for comp in connected_comp:
+                    if connected_comp[comp] == connected_comp[v.id]:
+                        other_comp = connected_comp[v.id]
+                        connected_comp[comp] = connected_comp[u.id]
+
+                        iterator = (key for key in connected_comp \
+                                    if connected_comp[key] == other_comp)
+                        for item in iterator:
+                            connected_comp[item] = connected_comp[u.id]
+        print("KRUSKAL END")
+        return mst
+
+
+    def KruskalI(self):
+      
+        mst = self.copiar_grafo(id=f"{self.id}_KruskalI_MST", dirigido=self.dirigido)
+
+        edges_sorted = list(self.E.values())
+        edges_sorted.sort(key = lambda edge: edge.attrs['peso'], reverse=True)
+
+        for edge in edges_sorted:
+            u, v = edge.u.id, edge.v.id
+            key, value = (u, v), edge
+            del(mst.E[(u, v)])
+            if len(mst.BFS(edge.u).V) != len(mst.V):
+                mst.E[(u, v)] = edge
+        
+        print("KRUSKAL I END")
+        return mst
+
+
+    def Prim(self):
+        mst = Grafo(id=f"{self.id}_Prim")
+        line = heapdict.heapdict()
+        parents = dict()
+        in_tree = set()
+
+        s = random.choice(list(self.V.values()))
+
+        #Asignar valores infinitos a los nodos y buscar nodo padre
+        line[s.id] = 0
+        parents[s.id] = None
+        for node in self.V:
+            if node == s.id:
+                continue
+            line[node] = np.inf
+            parents[node] = None
+
+        while line:
+            u, u_dist = line.popitem()
+            if u_dist == np.inf:
+                continue
+
+            self.V[u].attrs['dist'] = u_dist
+            mst.add_nodo(self.V[u])
+            if parents[u] is not None:
+                arista = Arista(self.V[parents[u]], self.V[u])
+                if (u, parents[u]) in self.E:
+                    weight = self.E[(u, parents[u])].attrs['peso']
+                else:
+                    weight = self.E[(parents[u], u)].attrs['peso']
+                arista.attrs['peso'] = weight
+                mst.add_arista(arista)
+            in_tree.add(u)
+
+            # Buscar los nodos vecinos
+            neigh = []
+            for arista in self.E:
+                if self.V[u].id in arista:
+                    v = arista[0] if self.V[u].id == arista[1] else arista[1]
+                    if v not in in_tree:
+                        neigh.append(v)
+
+            # actualizar pesos
+            for v in neigh:
+                arista = (u, v) if (u, v) in self.E else (v, u)
+                if line[v] > self.E[arista].attrs['peso']:
+                    line[v] = self.E[arista].attrs['peso']
+                    parents[v] = u
+        print("PRIM END")
+        return mst
